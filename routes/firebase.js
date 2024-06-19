@@ -11,9 +11,14 @@ router.get('/', function(req, res, next) {
   const notification = {
     notification: {
       title: "api test",
-      body: "api background test"
+      body: "api background test",
+      // content_available: true,
     },
-    token: 'x1'
+    "data": {
+      "url": "https://example.com",
+      "timestamp": "1718783875"
+    },
+    token: 'z_yxBNnOL8WtoIgJLQ9J2WfuI0zp6Z3RgArW_TDPRCmgnba'
   };
 
   admin.messaging().send(notification).then((response) => {
