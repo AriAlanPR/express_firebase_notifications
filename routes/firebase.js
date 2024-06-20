@@ -1,3 +1,4 @@
+require('dotenv').config();
 var express = require('express');
 const admin = require('firebase-admin');
 var router = express.Router();
@@ -44,7 +45,7 @@ router.get('/', function(req, res, next) {
 router.post('/', function(req, res) {
   console.log("Got a request body::", req.body);
 
-  const tokentest = req.body.deviceId;
+  const token = req.body.deviceId;
   const notification = {
     notification: {
       // content_available: true,
@@ -56,7 +57,7 @@ router.post('/', function(req, res) {
       "timestamp": "1718783875",
       "content_available": "true"
     },
-    token: tokenrelease,
+    token: token,
   };
 
   admin.messaging().send(notification).then((response) => {
