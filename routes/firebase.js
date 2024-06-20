@@ -41,4 +41,31 @@ router.get('/', function(req, res, next) {
   // res.send('respond with a firebase resource');
 });
 
+router.post('/', function(req, res) {
+  console.log("Got a request body::", req.body);
+
+  const tokentest = req.body.deviceId;
+  const notification = {
+    notification: {
+      // content_available: true,
+      title: "api test",
+      body: "api background test",
+    },
+    "data": {
+      "url": "https://example.com",
+      "timestamp": "1718783875",
+      "content_available": "true"
+    },
+    token: tokenrelease,
+  };
+
+  admin.messaging().send(notification).then((response) => {
+    console.log("notification delivered", response);
+    return res.status(200).json({message: `Notification sent: ${response}`})
+  }).catch((error) => {
+    return res.status(500).json({message: `Error in notification: ${JSON.stringify(error)}`});
+  });
+  // res.send('respond with a firebase resource');
+});
+
 module.exports = router;
