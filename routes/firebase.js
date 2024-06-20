@@ -1,25 +1,36 @@
 var express = require('express');
 const admin = require('firebase-admin');
 var router = express.Router();
-var serviceAccount = require('../firebase_config/notificaciones-2be2a-firebase-adminsdk-po8ha-c5eed88ce4.json')
+//notificaciones firebase de prueba
+// var serviceAccount = require(`../firebase_config/${process.env.FIREBASE_TEST}`);
+//notificaciones firebase de prueba 2
+var serviceAccount = require(`../firebase_config/${process.env.FIREBASE_PROD}`);
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
+  const tokentest = '';
+  const tokenrelease = '';
   const notification = {
     notification: {
+      // content_available: true,
       title: "api test",
       body: "api background test",
-      // content_available: true,
     },
     "data": {
       "url": "https://example.com",
-      "timestamp": "1718783875"
+      "timestamp": "1718783875",
+      "content_available": "true"
     },
-    token: 'z_yxBNnOL8WtoIgJLQ9J2WfuI0zp6Z3RgArW_TDPRCmgnba'
+    token: tokenrelease,
   };
+
+  admin.messaging().send({
+    ...notification,
+    token: tokentest
+  });
 
   admin.messaging().send(notification).then((response) => {
     console.log("notification delivered", response);
