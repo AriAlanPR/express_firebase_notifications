@@ -16,14 +16,12 @@ router.get('/', function(req, res, next) {
   const tokenrelease = '';
   const notification = {
     notification: {
-      // content_available: true,
-      title: "api test",
-      body: "api background test",
+      title: "Nuevo movimiento de caja",
+      body: "Favor de revisar los movimientos pendientes.",
     },
     "data": {
-      "url": "https://example.com",
+      "url": "https://btrack-r.delbravo.tech/muleros",
       "timestamp": "1718783875",
-      "content_available": "true"
     },
     token: tokenrelease,
   };
@@ -39,7 +37,6 @@ router.get('/', function(req, res, next) {
   }).catch((error) => {
     return res.status(500).json({message: `Error in notification: ${JSON.stringify(error)}`});
   });
-  // res.send('respond with a firebase resource');
 });
 
 router.post('/', function(req, res) {
@@ -48,14 +45,12 @@ router.post('/', function(req, res) {
   const token = req.body.deviceId;
   const notification = {
     notification: {
-      // content_available: true,
-      title: "api test",
-      body: "api background test",
+      title: "Nuevo movimiento de caja",
+      body: "Favor de revisar los movimientos pendientes.",
     },
     "data": {
-      "url": "https://example.com",
+      "url": "https://btrack-r.delbravo.tech/muleros",
       "timestamp": "1718783875",
-      "content_available": "true"
     },
     token: token,
   };
@@ -66,7 +61,6 @@ router.post('/', function(req, res) {
   }).catch((error) => {
     return res.status(500).json({message: `Error in notification: ${JSON.stringify(error)}`});
   });
-  // res.send('respond with a firebase resource');
 });
 
 module.exports = router;
