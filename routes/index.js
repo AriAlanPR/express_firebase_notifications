@@ -10,22 +10,11 @@ router.get('/', function(req, res, next) {
     });
 });
 
-router.get('/api/auth/login', function(req, res, next) {
-    console.log(req.query);
-
-    res.json({
-        'token_type': 'Bearer',
-        'access_token': 'HA70JSM123456',
-        'expires_at': (new Date()).getMilliseconds(),
-        'token_id': 'HA70JSM11111',
-    });
-});
-
 router.get('/muleros/api/detalle', function(req, res, next) {
     console.log(req.query);
-    detalles = {
+    let detalles = {
         "url": "http://btrack.org",
-        "fecha_destino": 1719242472331,
+        "fecha_destino": (1719242472331).toString(),
         "caja": "QF04TEC",
         "origen": "similique quaerat totam",
         "destino": "est est consequatur"
@@ -36,7 +25,7 @@ router.get('/muleros/api/detalle', function(req, res, next) {
 
 router.get('/muleros/api/list', function(req, res, next) {
     console.log(req.query);
-    listado = [
+    let listado = [
         {
             "caja": "HA70JSM",
             "status": "c",
@@ -51,7 +40,7 @@ router.get('/muleros/api/list', function(req, res, next) {
         }
     ];
 
-    res.json(detalles);
+    res.json(listado);
 });
 
 router.post('/', function(req, res){
@@ -60,10 +49,27 @@ router.post('/', function(req, res){
     res.json(req.body);
 });
 
+router.post('/api/auth/login', function(req, res) {
+    console.log(req.body);
+    let loginResponse = {
+        token_type: 'Bearer',
+        access_token: 'HA70JSM123456',
+        expires_at: (new Date()).getTime().toString(),
+        token_id: 'HA70JSM11111',
+    };
+
+    // loginResponse = JSON.stringify(loginResponse);
+
+    res.json(loginResponse);
+});
+
 router.post('/api/auth/setDevice', function(req, res) {
     console.log(req.body);
+    let response = req.body;
 
-    res.status(200).json(req.body);
+    response = JSON.stringify(response);
+
+    res.status(200).json(response);
 });
 
 module.exports = router;
