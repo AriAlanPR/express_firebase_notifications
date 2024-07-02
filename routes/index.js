@@ -18,10 +18,12 @@ router.post('/', function(req, res){
 
 router.post('/api/auth/login', function(req, res) {
     console.log(req.body);
+    const today = (new Date()).getTime();
+    const exp_date = (today + (365 * 24 * 60 * 60 * 1000)).toString(); //sum a year
     let loginResponse = {
         token_type: 'Bearer',
         access_token: 'AT-HA70JSM123456',
-        expires_at: (new Date()).getTime().toString(),
+        expires_at: exp_date.toString(),
         token_id: 'HA70JSM11111',
     };
 
@@ -40,13 +42,13 @@ router.post('/api/auth/setDevice', function(req, res) {
 });
 
 router.post('/api/auth/muleros/getDetalleApp/:id', function(req, res, next) {
-    console.log(`req.params: ${req.params}`);
-    console.log(`req body: ${req.body}`);
+    console.log(`req.params: ${JSON.stringify(req.params)}`);
+    console.log(`req body: ${JSON.stringify(req.body)}`);
 
     let detalles = {
         "id": req.params.id,
         "url": "http://btrack.org",
-        "fecha": (1719242472331).toString(),
+        "fecha": (new Date()).getTime().toString(),
         "caja": "QF04TEC",
         "transportista": "lorem ipsum",
         "origen": "similique quaerat totam",
