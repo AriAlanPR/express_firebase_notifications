@@ -55,7 +55,9 @@ router.post('/api/auth/muleros/getDetalleApp/:id', function(req, res, next) {
         "destino": "est est consequatur"
     };
 
-    res.json(detalles);
+    res.json({
+        CajasAsignadasMovimiento: detalles
+    });
 });
 
 router.post('/api/auth/muleros/getListApp', function(req, res, next) {
