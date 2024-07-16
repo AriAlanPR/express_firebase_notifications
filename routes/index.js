@@ -27,9 +27,7 @@ router.post('/api/auth/login', function(req, res) {
         token_id: 'HA70JSM11111',
     };
 
-    // loginResponse = JSON.stringify(loginResponse);
-
-    res.json(loginResponse);
+    res.status(200).json(loginResponse);
 });
 
 router.post('/api/auth/setDevice', function(req, res) {
@@ -47,9 +45,9 @@ router.post('/api/auth/muleros/getDetalleApp/:id', function(req, res, next) {
 
     let detalles = {
         "id": req.params.id,
-        "url": "http://btrack.org",
+        "url": "http://btrack-r.delbravo.tech/muleros",
         "fecha": (new Date()).getTime().toString(),
-        "caja": "QF04TEC",
+        "caja": "4893022",
         "transportista": "lorem ipsum",
         "origen": "similique quaerat totam",
         "destino": "est est consequatur"
@@ -65,16 +63,32 @@ router.post('/api/auth/muleros/getListApp', function(req, res, next) {
 
     let listado = [
         {
-            "caja": "HA70JSM",
-            "status": "c",
+            "caja": "0294856",
+            "status": "En proceso de carga",
             "api_url_detalle": "http://192.168.10.105:3000/api/auth/muleros/getDetalleApp/1",
-            "web_url": "https://btrack.org/mulero"
+            "web_url": "https://btrack.org/mulero",
+            "status_color": "#37ad5a"
         },
         {
-            "caja": "LD30OLK",
-            "status": "a",
+            "caja": "1958594",
+            "status": "En proceso de descarga",
             "api_url_detalle": "http://192.168.10.105:3000/api/auth/muleros/getDetalleApp/2",
-            "web_url": "https://btrack.org/mulero"
+            "web_url": "https://btrack.org/mulero",
+            "status_color": "#e01021"
+        },
+        {
+            "caja": "5419345",
+            "status": "En proceso de carga",
+            "api_url_detalle": "http://192.168.10.105:3000/api/auth/muleros/getDetalleApp/3",
+            "web_url": "https://btrack-r.delbravo.tech/mulero",
+            "status_color": "#37ad5a"
+        },
+        {
+            "caja": "3412938",
+            "status": "Finalizado",
+            "api_url_detalle": "http://192.168.10.105:3000/api/auth/muleros/getDetalleApp/4",
+            "web_url": "https://btrack-r.delbravo.tech/mulero",
+            "status_color": "#2e8274"
         },
     ];
 
