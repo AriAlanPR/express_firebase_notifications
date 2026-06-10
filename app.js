@@ -6,7 +6,8 @@ var logger = require('morgan');
 const cors = require('cors');
 
 var indexRouter = require('./routes/index');
-var firebaseRouter = require('./routes/firebase');
+var btrackRouter = require('./routes/btrack');
+var siiRouter = require('./routes/sii');
 
 var app = express();
 
@@ -25,7 +26,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/firebase', firebaseRouter);
+app.use('/btrack', btrackRouter);
+app.use('/sii', siiRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
