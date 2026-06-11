@@ -120,3 +120,6 @@ dist
 
 # vscode settings
 .vscode/
+
+#mac misc
+.DS_Store
