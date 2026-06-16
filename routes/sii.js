@@ -20,10 +20,40 @@ const siiNotificationPresets = {
     body: 'Tienes una nueva comunicación disponible.',
   },
   pedimento_created: {
-    title: 'Nuevo pedimento',
-    body: 'Se registró un nuevo pedimento para consulta.',
+    title: 'Estatus de Pedimento Actualizado',
+    body: 'El pedimento {{pedimento}} tiene una actualización de estatus.',
   },
 };
+
+/**
+ * Resolves pedimento value from accepted aliases in the request body.
+ *
+ * @param {import('express').Request} req Express request.
+ * @returns {string|null} Pedimento value when available.
+ */
+function resolvePedimento(req) {
+  const pedimento = req.body.pedimento || req.body.actionPayload || req.body.resourceId;
+
+  if (pedimento === undefined || pedimento === null || pedimento === '') {
+    return null;
+  }
+
+  return String(pedimento);
+}
+
+/**
+ * Builds the same human-readable body used by TraficoWeb for pedimento updates.
+ *
+ * @param {string|null} pedimento Pedimento number.
+ * @returns {string} Notification body for mobile clients.
+ */
+function buildPedimentoStatusBody(pedimento) {
+  if (!pedimento) {
+    return 'El pedimento recibido tiene una actualización de estatus.';
+  }
+
+  return `El pedimento ${pedimento} tiene una actualización de estatus.`;
+}
 
 function resolveTraficoRequestConfig(req) {
   const traficoBaseUrl = req.body.traficoBaseUrl || process.env.TRAFICO_BASE_URL;
@@ -221,9 +251,16 @@ function sendGenericTraficoRequest(req, res) {
 function buildSiiNotification(req, actionType) {
   const token = req.body.deviceId || req.body.token || req.body.fcmToken;
   const preset = siiNotificationPresets[actionType] || {};
+  const pedimento = actionType === 'pedimento_created' ? resolvePedimento(req) : null;
   const title = req.body.title || preset.title || 'Nueva Comunicación';
-  const body = req.body.body || preset.body || 'Tienes una nueva notificación.';
-  const actionPayload = req.body.actionPayload || req.body.resourceId || `test-${Date.now()}`;
+  const body = req.body.body
+    || (actionType === 'pedimento_created'
+      ? buildPedimentoStatusBody(pedimento)
+      : preset.body)
+    || 'Tienes una nueva notificación.';
+  const actionPayload = actionType === 'pedimento_created'
+    ? (pedimento || `pedimento-${Date.now()}`)
+    : (req.body.actionPayload || req.body.resourceId || `test-${Date.now()}`);
   const perfilId = req.body.perfilId === undefined || req.body.perfilId === null
     ? ''
     : String(req.body.perfilId);
@@ -282,6 +319,7 @@ router.get('/presets', function(req, res) {
     body: {
       deviceId: 'required FCM token, also accepts token or fcmToken',
       actionPayload: 'optional resource id used by sii-movil navigation',
+      pedimento: 'optional alias for actionPayload on pedimento notifications',
       perfilId: 'optional destination profile id; empty string simulates unknown profile',
       title: 'optional visible title override',
       body: 'optional visible body override',
@@ -327,6 +365,10 @@ router.post('/communication-created', function(req, res) {
 });
 
 router.post('/pedimento-created', function(req, res) {
+  return sendSiiNotification(req, res, 'pedimento_created');
+});
+
+router.post('/pedimento-status-changed', function(req, res) {
   return sendSiiNotification(req, res, 'pedimento_created');
 });
 
